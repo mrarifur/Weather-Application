@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>TAMK Weather Station</title>
+
+    <!-- font-awesome -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.13.0/css/all.min.css" rel="stylesheet" />
+    <!-- style -->
+    <link rel="stylesheet" href="css/style.css" />
+</head>
+
+<body>
+    <nav class="navbar">
+        <div class="logo">
+            <h1>TAMK Weather Station</h1>
+        </div>
+        <ul>
+            <li><a href="./index.html" class="menu" id="latest">Latest</a></li>
+            <li>
+                <a href="./winddirection.html" class="menu" id="wind_direction">Wind_direction</a
+          >
+        </li>
+        <li class="active">
+          <a href="./windspeed.html" class="menu" id="wind_speed">Wind_speed</a>
+            </li>
+            <li>
+                <a href="./measurements.html" class="menu" id="all-types">Measurement</a
+          >
+        </li>
+      </ul>
+    </nav>
+
+    <header>
+      <button id="toggle" class="toggle">
+        <i class="fas fa-bars fa-2x"></i>
+      </button>
+      <h1>Weather Data</h1>
+    </header>
+
+    <div class="container">
+      <div class="section">
+        <div class="details">
+          <h3>Arifur Rahaman</h3>
+          <a href="mailto:arifur.rahaman@tuni.fi">arifur.rahaman@tuni.fi </a>
+          <p>course_implementation: 3005</p>
+
+                </div>
+
+                <button id="graph" class="graph-bar">
+          <i class="fas fa-chart-bar fa-2x"></i>
+        </button>
+                </div>
+                <div class="select-item">
+                    <select id="select-option">
+          <option value="" selected>Latest</option>
+          <option value="23">24 Hours</option>
+          <option value="47">48 Hours</option>
+          <option value="71">72 Hours</option>
+          <option value="168">1 Week</option>
+        </select>
+                    <input type="text" class="search-bar" id="search" onkeyup="searchInput()" placeholder=" Search Here" />
+                </div>
+
+                <table class="table" id="table"></table>
+                </div>
+
+                <!-- Modal -->
+                <div class="modal-container" id="modal-container">
+                    <div class="modal">
+                        <button class="close-btn" id="close">
+          <i class="fa fa-times"></i>
+        </button>
+                        <div class="modal-header">
+                            <h2>Chart</h2>
+                        </div>
+
+                        <div class="modal-content">
+                            <!-- chart -->
+                            <!-- <div id="chart" style="width:600px; height:400px;"></div> -->
+                            <div id="chartReport">
+                                <canvas id="chart"></canvas>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <script>
+                    const selectOption = document.getElementById("select-option");
+
+                    selectOption.addEventListener("change", (e) => {
+                        selectedValue = e.target.value;
+                        getTableData(selectedValue);
+                    });
+                    async function getTableData(value = "") {
+                        const res = await fetch(
+                            "https://webapi19sa-1.course.tamk.cloud/v1/weather/" +
+                            "wind_speed" +
+                            "/" +
+                            value
+                        );
+                        const data = await res.json();
+                        console.log(data);
+                        showTableAndChart(data, "wind_speed", true);
+                    }
+                </script>
+
+                <script src="./js/script.js"></script>
+                <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/chart.js@3.2.0/dist/chart.min.js"></script>
+</body>
+
+</html>
